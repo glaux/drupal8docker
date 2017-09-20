@@ -39,3 +39,7 @@ Drush is included in the image, to use it exec into the running container.
 Find the container ID by running `docker container ls`.
 
 Exec into the container by running `docker exec -ti xyz /bin/bash` where `xyz` is the first couple of digits in the ID hex. Now you can drush.
+
+### About
+
+This project was created out of the [frustrations of getting drush to work with docker](https://stackoverflow.com/a/46322540/1685346). Feel free to use this project as you see fit without guaranties of any kind.

@@ -682,15 +682,39 @@ $settings['container_yamls'][] = __DIR__ . '/services.yml';
 # if (file_exists(__DIR__ . '/settings.local.php')) {
 #   include __DIR__ . '/settings.local.php';
 # }
-$databases['default']['default'] = array (
-  'database' => 'project',
-  'username' => 'drupal',
-  'password' => '123',
-  'prefix' => '',
-  'host' => 'mysql',
-  'port' => '3306',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver' => 'mysql',
+
+// Read the environment variables from file
+$file = file_get_contents('../../environment.env');
+$vars = preg_split('/\n/', $file, null, PREG_SPLIT_NO_EMPTY);
+$envs = [];
+foreach ( $vars as $var ) {
+  $arr = preg_split('/=/', $var, null, PREG_SPLIT_NO_EMPTY);
+  $envs[$arr[0]] = $arr[1];
+}
+
+// Database setup
+$databases = array (
+  'default' => array (
+    'default' => array (
+      'database' => $envs['MYSQL_DATABASE'] ?? '',
+      'username' => $envs['MYSQL_USER'] ?? '',
+      'password' => $envs['MYSQL_PASSWORD'] ?? '',
+      'host' => 'mysql',
+      'port' => '3306',
+      'driver' => 'mysql',
+      'prefix' => '',
+      'charset' => 'utf8mb4',
+      'collation' => 'utf8mb4_general_ci',
+      'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+    ),
+  ),
 );
+
 $settings['install_profile'] = 'standard';
-$config_directories['sync'] = 'sites/default/files/config_GdLC36rpZDmtzhEgpZjB0lI_hYqv9a4YW3Si0zEOuRvQ8qjHxqmKjTWHzKP2Sh-ErogsP4eQxg/sync';
+
+// Environment
+$config_directories['sync']        = $envs['DRUPAL_CONFIG_DIRECTORY_SYNC'] ?? '';
+$settings['trusted_host_patterns'] = [$envs['DRUPAL_TRUSTED_HOST_PATTERN'] ?? '',];
+$settings['file_private_path']     = $envs['DRUPAL_FILE_PRIVATE_PATH'] ?? '';
+$settings['file_temporary_path']   = $envs['DRUPAL_FILE_TEMPORARY_PATH'] ?? '';
+$settings['hash_salt']             = $envs['DRUPAL_HASH_SALT'] ?? '';
