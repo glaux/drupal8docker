@@ -6,6 +6,10 @@ Install [Docker](https://store.docker.com/editions/community/docker-ce-desktop-w
 
 Restart the machine when prompted to activate Hyper-V (Windows 10 Pro - 64bit required. Virtualbox or similar may be required on other systems).
 
+### Install on other systems
+
+Find the [relevant Docker installer](https://www.docker.com).
+
 ### Run
 
 Run ```docker-compose up``` in the repo root.
@@ -14,7 +18,7 @@ Visit the site on ```localhost:8090```.
 
 Visit phpmyadmin on ```localhost:8080```.
 
-Log in as the super user with user name ```admin``` and password ```123```.
+Log in as the super user with user name ```admin``` and password ```123``` if you are not logged in as default.
 
 ### Shut down
 
@@ -31,6 +35,7 @@ All passwords is set to 123, remember to change these.
 ### Environment variables
 
 All vars is moved to `./docker/project/environment.env` to try to streamline the setup.
+You might want to change some of these.
 
 ### Drush
 
