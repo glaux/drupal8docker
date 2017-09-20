@@ -1,0 +1,54 @@
+version: '3.3'
+
+services:
+
+  project:
+    build: ./docker/project
+    ports:
+      - "8090:80"
+    volumes:
+      - ./docker/project/modules:/var/www/html/modules
+      - ./docker/project/themes:/var/www/html/themes
+      - ./docker/project/libraries:/var/www/html/libraries
+      - ./docker/project/profiles:/var/www/html/profiles
+      - ./docker/project/sites:/var/www/html/sites
+      # Add anonymous volumes to exclude cache files explicitly
+      - /var/www/html/sites/default/files/js
+      - /var/www/html/sites/default/files/css
+      - /var/www/html/sites/default/files/php
+    depends_on:
+      - mysql
+      - drupal
+    restart: always
+
+  drupal:
+    image: customdrupal
+    build: ./docker/drupal
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    volumes:
+      - ./docker/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+    env_file:
+      - ./docker/project/environment.env
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    restart: always
+
+  mysql:
+    image: mysql
+    build: ./docker/mysql
+    env_file:
+      - ./docker/project/environment.env
+    hostname: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+
+# Persistent sql storage
+volumes:
+  mysql-data:
