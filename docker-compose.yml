@@ -3,15 +3,53 @@ version: '3.3'
 services:
 
   project:
-    build: ./docker/project
+    build: ./docker/project1
     ports:
-      - "8090:80"
+      - "8091:80"
     volumes:
-      - ./docker/project/modules:/var/www/html/modules
-      - ./docker/project/themes:/var/www/html/themes
-      - ./docker/project/libraries:/var/www/html/libraries
-      - ./docker/project/profiles:/var/www/html/profiles
-      - ./docker/project/sites:/var/www/html/sites
+      - ./docker/project1/modules:/var/www/html/modules
+      - ./docker/project1/themes:/var/www/html/themes
+      - ./docker/project1/libraries:/var/www/html/libraries
+      - ./docker/project1/profiles:/var/www/html/profiles
+      - ./docker/project1/sites:/var/www/html/sites
+      # Add anonymous volumes to exclude cache files explicitly
+      - /var/www/html/sites/default/files/js
+      - /var/www/html/sites/default/files/css
+      - /var/www/html/sites/default/files/php
+    depends_on:
+      - mysql
+      - drupal
+    restart: always
+
+  project2:
+    build: ./docker/project2
+    ports:
+      - "8092:80"
+    volumes:
+      - ./docker/project2/modules:/var/www/html/modules
+      - ./docker/project2/themes:/var/www/html/themes
+      - ./docker/project2/libraries:/var/www/html/libraries
+      - ./docker/project2/profiles:/var/www/html/profiles
+      - ./docker/project2/sites:/var/www/html/sites
+      # Add anonymous volumes to exclude cache files explicitly
+      - /var/www/html/sites/default/files/js
+      - /var/www/html/sites/default/files/css
+      - /var/www/html/sites/default/files/php
+    depends_on:
+      - mysql
+      - drupal
+    restart: always
+
+  project3:
+    build: ./docker/project3
+    ports:
+      - "8093:80"
+    volumes:
+      - ./docker/project3/modules:/var/www/html/modules
+      - ./docker/project3/themes:/var/www/html/themes
+      - ./docker/project3/libraries:/var/www/html/libraries
+      - ./docker/project3/profiles:/var/www/html/profiles
+      - ./docker/project3/sites:/var/www/html/sites
       # Add anonymous volumes to exclude cache files explicitly
       - /var/www/html/sites/default/files/js
       - /var/www/html/sites/default/files/css
@@ -30,7 +68,7 @@ services:
     volumes:
       - ./docker/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
     env_file:
-      - ./docker/project/environment.env
+      - ./environment.env
     ports:
       - "8080:80"
     depends_on:
@@ -41,7 +79,7 @@ services:
     image: mysql
     build: ./docker/mysql
     env_file:
-      - ./docker/project/environment.env
+      - ./environment.env
     hostname: mysql
     ports:
       - 3306:3306
