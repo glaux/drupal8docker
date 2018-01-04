@@ -29,21 +29,18 @@ When running ```docker-compose up``` for the first time, the database is initial
 
 You can start over with a new install by removing the `COPY` statement from `./docker/mysql/Dockerfile` and deleting the files `./docker/project/sites/default/settings.php` and `./docker/mysql/init.db`.
 
-The included image, init.sql, is a clean standard install of Drupal 8, take a look at db.config.png to see how it was set up.
-All passwords is set to 123, remember to change these.
+The included image, init.sql, is a clean standard install of Drupal 8, take a look at db.config.png to see how it was set up. The Devel and Hello World modules are enabled in the database image.
 
 ### Environment variables
 
 All vars is moved to `./docker/project/environment.env` to try to streamline the setup.
-You might want to change some of these.
+You might want to change some of these. For example, all passwords are set to 123 and development options are on (no or limited caching).
 
-### Drush
+### Drush and Drupal Console
 
-Drush is included in the image, to use it exec into the running container.
+Drush and Drupal Console are included in the image.
 
-Find the container ID by running `docker container ls`.
-
-Exec into the container by running `docker exec -ti xyz /bin/bash` where `xyz` is the first couple of digits in the ID hex. Now you can drush.
+To use them, exec into the running container with  `docker exec -ti drupal8docker /bin/bash`.
 
 ### About
 

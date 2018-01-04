@@ -283,7 +283,7 @@ $config_directories = array();
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-$settings['hash_salt'] = '773PI_VT_senTMKv67SFcA5LLRL5zzGRjfDtlqbDdXsw5S8IgE38zocYPoDLa70Jwme6POzZ-w';
+// $settings['hash_salt'] = '773PI_VT_senTMKv67SFcA5LLRL5zzGRjfDtlqbDdXsw5S8IgE38zocYPoDLa70Jwme6POzZ-w';
 
 /**
  * Deployment identifier.
@@ -306,7 +306,7 @@ $settings['hash_salt'] = '773PI_VT_senTMKv67SFcA5LLRL5zzGRjfDtlqbDdXsw5S8IgE38zo
  * After finishing the upgrade, be sure to open this file again and change the
  * TRUE back to a FALSE!
  */
-$settings['update_free_access'] = FALSE;
+// $settings['update_free_access'] = FALSE;
 
 /**
  * External access proxy settings:
@@ -621,7 +621,7 @@ if ($settings['hash_salt']) {
 /**
  * Load services definition file.
  */
-$settings['container_yamls'][] = __DIR__ . '/services.yml';
+// $settings['container_yamls'][] = __DIR__ . '/services.yml';
 
 /**
  * Override the default service container class.
@@ -710,11 +710,23 @@ $databases = array (
   ),
 );
 
-$settings['install_profile'] = 'standard';
+// Standard settings
+$settings['install_profile']    = 'standard';
+$settings['container_yamls'][]  = __DIR__ . '/services.yml';
+$settings['update_free_access'] = FALSE;
 
 // Environment
-$config_directories['sync']        = $envs['DRUPAL_CONFIG_DIRECTORY_SYNC'] ?? '';
-$settings['trusted_host_patterns'] = [$envs['DRUPAL_TRUSTED_HOST_PATTERN'] ?? '',];
+$settings['trusted_host_patterns'] = [$envs['DRUPAL_TRUSTED_HOST_PATTERN'] ?? ''];
 $settings['file_private_path']     = $envs['DRUPAL_FILE_PRIVATE_PATH'] ?? '';
 $settings['file_temporary_path']   = $envs['DRUPAL_FILE_TEMPORARY_PATH'] ?? '';
 $settings['hash_salt']             = $envs['DRUPAL_HASH_SALT'] ?? '';
+
+// Config directories
+$config_directories['sync']        = $envs['DRUPAL_CONFIG_DIRECTORY_SYNC'] ?? '';
+
+// Load dev settings
+if ( file_exists(__DIR__ . '/settings.local.php')
+  && $envs['DEVELOPMENT_ENVIRONMENT'] === 'true'
+) {
+  include __DIR__ . '/settings.local.php';
+}
